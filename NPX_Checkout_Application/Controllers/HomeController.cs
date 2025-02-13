@@ -1,11 +1,10 @@
-using System.Diagnostics;
-using System.Runtime;
-using System.Text;
 using Microsoft.AspNetCore.Mvc;
 using Newtonsoft.Json;
 using Newtonsoft.Json.Linq;
 using NPX_Checkout_Application.Models;
 using NPX_Checkout_Application.Utilities;
+using System.Diagnostics;
+using System.Text;
 
 namespace NPX_Checkout_Application.Controllers
 {
@@ -46,7 +45,6 @@ namespace NPX_Checkout_Application.Controllers
                 data["Amount"] = model.Amount;
                 data["MerchantTxnId"] = model.MerchantTxnId;
                 data["TransactionRemarks"] = model.TransactionRemarks;
-                data["PaymentCurrency"] = "NPR";
 
                 string jsonData = JsonConvert.SerializeObject(data);
 
@@ -75,9 +73,7 @@ namespace NPX_Checkout_Application.Controllers
                             Amount = model.Amount,
                             MerchantTxnId = data["MerchantTxnId"]!.ToString(),
                             TransactionRemarks = model.TransactionRemarks,
-                            PaymentCurrency = "NPR",
                             ProcessId = resModel.data.ProcessId.ToString(),
-                            ResponseUrl = $"{Request.Scheme}://{Request.Host}/api/Response/Receipt"
                         };
 
                         return RedirectToAction("PaymentIndex", redirectionModel);

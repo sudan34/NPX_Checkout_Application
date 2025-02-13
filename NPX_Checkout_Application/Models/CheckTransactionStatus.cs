@@ -1,6 +1,4 @@
-﻿using System.ComponentModel.DataAnnotations;
-
-namespace NPX_Checkout_Application.Models
+﻿namespace NPX_Checkout_Application.Models
 {
     public class CheckTransactionStatus
     {
