@@ -38,8 +38,8 @@ namespace NPX_Checkout_Application.Controllers
                 MerchantTxnId = MerchantTxnId
             };
 
-            var plainText = GeneratePlainText(JsonConvert.SerializeObject(checkTransactionStatus));
-            checkTransactionStatus.Signature = SignatureGeneration(plainText, secretKey!);
+            var plainText = SignatureUtility.GeneratePlainText(JsonConvert.SerializeObject(checkTransactionStatus));
+            checkTransactionStatus.Signature = SignatureUtility.SignatureGeneration(plainText, secretKey!);
 
             var payloadData = JsonConvert.SerializeObject(checkTransactionStatus);
             var authHeaderValue = Convert.ToBase64String(Encoding.ASCII.GetBytes($"{merchantName}:{apiPassword}"));
@@ -62,16 +62,5 @@ namespace NPX_Checkout_Application.Controllers
 
             return Ok("Failed");
         }
-        #region Signature and Plaintext Generation
-        private string GeneratePlainText(string jsonString)
-        {
-            return SignatureUtility.GeneratePlainText(jsonString);
-        }
-
-        private string SignatureGeneration(string plainText, string secretKey)
-        {
-            return SignatureUtility.SignatureGeneration(plainText, secretKey);
-        }
-        #endregion
     }
 }

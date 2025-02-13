@@ -48,8 +48,8 @@ namespace NPX_Checkout_Application.Controllers
 
                 string jsonData = JsonConvert.SerializeObject(data);
 
-                string plainText = GeneratePlainText(jsonData);
-                string signature = SignatureGeneration(plainText, secretKey);
+                string plainText = SignatureUtility.GeneratePlainText(jsonData);
+                string signature = SignatureUtility.SignatureGeneration(plainText, secretKey);
                 data["Signature"] = signature;
                 string payloadData = JsonConvert.SerializeObject(data);
 
@@ -88,20 +88,10 @@ namespace NPX_Checkout_Application.Controllers
             return RedirectToAction("Index");
         }
         public ActionResult PaymentIndex(RedirectionModel model)
-        { return View(model); }
-
-        #region Signature and Plaintext Generation
-        private string GeneratePlainText(string jsonString)
-        {
-            return SignatureUtility.GeneratePlainText(jsonString);
+        { 
+            return View(model); 
         }
-
-        private string SignatureGeneration(string plainText, string secretKey)
-        {
-            return SignatureUtility.SignatureGeneration(plainText, secretKey);
-        }
-        #endregion
-
+                
         [ResponseCache(Duration = 0, Location = ResponseCacheLocation.None, NoStore = true)]
         public IActionResult Error()
         {
