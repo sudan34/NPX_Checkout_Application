@@ -1,0 +1,26 @@
+﻿@{
+    ViewData["Title"] = "PaymentIndex";
+}
+@model NPX_Checkout_Application.Models.RedirectionModel
+@inject AppSettings _settings;
+<html>
+<head>
+    <title> Gateway TEST</title>
+</head>
+
+
+<body onload="document.getElementById('form').submit()">
+
+    <form method="post" action="@(_settings.GatewayUrl)Payment/Index" id="form">
+
+        <input id="MerchantId" type="hidden" name="MerchantId" value="@Model.MerchantId" />
+        <input id="MerchantName" type="hidden" name="MerchantName" value="@Model.MerchantName" />
+        <input id="MerchantTxnId" type="hidden" name="MerchantTxnId" value="@Model.MerchantTxnId" />
+        <input id="Amount" type="hidden" name="Amount" value="@Model.Amount" />
+        <input id="ProcessId" type="hidden" name="ProcessId" value="@Model.ProcessId" />
+        <input id="InstrumentCode" type="hidden" name="InstrumentCode" value="@Model.InstrumentCode" />
+        <input id="TransactionRemarks" type="hidden" name="TransactionRemarks" value="@Model.TransactionRemarks" />
+    </form>
+
+</body>
+</html>
