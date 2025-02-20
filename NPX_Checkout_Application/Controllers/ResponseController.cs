@@ -1,5 +1,4 @@
-﻿using Microsoft.AspNetCore.Http;
-using Microsoft.AspNetCore.Mvc;
+﻿using Microsoft.AspNetCore.Mvc;
 using Newtonsoft.Json;
 using NPX_Checkout_Application.Models;
 using NPX_Checkout_Application.Utilities;
@@ -22,7 +21,11 @@ namespace NPX_Checkout_Application.Controllers
             _settings = settings;
             _data = data;
         }
-        [HttpGet("Notification")]
+
+        // In-memory collection to track processed transactions
+        private static readonly HashSet<string> ProcessedTransactions = new HashSet<string>();
+
+        [HttpGet("Notify")]
         public async Task<IActionResult> Notification(string MerchantTxnId, string GatewayTxnId)
         {
             var merchantId = _data.MerchantId;
@@ -54,13 +57,25 @@ namespace NPX_Checkout_Application.Controllers
                 var responseData = await response.Content.ReadAsStringAsync();
                 var resModel = JsonConvert.DeserializeObject<CheckTransactionStatusResponse>(responseData);
 
-                if (resModel?.code?.ToString() == "0")
+                if (resModel?.code == "0")
                 {
-                    return Ok("Received");
+                    // Check if the transaction has already been processed
+                    if (ProcessedTransactions.Contains(MerchantTxnId))
+                    {
+                        return Ok("Already Received");
+                    }
+                    else
+                    {
+                        // Add the transaction to the processed list
+                        ProcessedTransactions.Add(MerchantTxnId);
+                        return Ok("Received");
+                    }
                 }
             }
 
             return Ok("Failed");
         }
+
+        
     }
 }

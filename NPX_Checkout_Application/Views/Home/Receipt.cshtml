@@ -1,0 +1,76 @@
+﻿@model TransactionData
+
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Transaction Receipt</title>
+    <style>
+        .receipt-container {
+            max-width: 600px;
+            margin: 50px auto;
+            padding: 20px;
+            border: 1px solid #ddd;
+            border-radius: 10px;
+            box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
+        }
+        .receipt-header {
+            text-align: center;
+            margin-bottom: 20px;
+        }
+        .receipt-details p {
+            margin: 10px 0;
+        }
+        .back-home {
+            display: block;
+            text-align: center;
+            margin-top: 20px;
+        }
+        /* Print-specific styles */
+        @@media print {
+            body * {
+                visibility: hidden; /* Hide everything by default */
+            }
+
+            .receipt-container, .receipt-container * {
+                visibility: visible; /* Show only the receipt container */
+            }
+
+            .receipt-container {
+                max-width: 100%;
+                margin: 0;
+                padding: 0;
+                border: none;
+                box-shadow: none;
+            }
+
+            .print-button, .back-home {
+                display: none; /* Hide the print and back-to-home buttons when printing */
+            }
+        }
+    </style>
+</head>
+<body>
+    <div class="receipt-container">
+        <div class="receipt-header">
+            <h2>Transaction Receipt</h2>
+        </div>
+        <div class="receipt-details">
+            <p><strong>Merchant Transaction ID:</strong> @Model.MerchantTxnId</p>
+            <p><strong>Gateway Reference No:</strong> @Model.GatewayReferenceNo</p>
+            <p><strong>Amount:</strong> @Model.Amount</p>
+            <p><strong>Service Charge:</strong> @Model.ServiceCharge</p>
+            <p><strong>Transaction Date:</strong> @Model.TransactionDate</p>
+            <p><strong>Status:</strong> @Model.Status</p>
+            <p><strong>Institution:</strong> @Model.Institution</p>
+            <p><strong>Payment Currency:</strong> @Model.PaymentCurrency</p>
+            <p><strong>Remarks:</strong> @Model.TransactionRemarks</p>
+        </div>
+        <div class="text-center mt-4">
+            <button onclick="window.print()" class="btn btn-primary print-button">Print Receipt</button>
+            <a href="/" class="btn btn-sm btn-secondary back-home">Back to Home</a>
+        </div>
+    </div>
+</body>
+</html>

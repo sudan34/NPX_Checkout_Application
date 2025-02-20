@@ -1,0 +1,39 @@
+﻿@model List<NPX_Checkout_Application.Models.PaymentInstrument>
+
+@{
+    ViewData["Title"] = "Select Payment Instrument";
+}
+
+<div class="container mt-4">
+    <div class="row d-flex justify-content-center align-items-center">
+        <div class="col-md-8">
+            <div class="card bg-light">
+                <div class="card-body">
+                    <h5 class="card-title">Select Payment Instrument</h5>
+                    <form method="post" action="@Url.Action("ProcessSelectedInstrument", "Home")">
+                        <div class="row">
+                            @foreach (var instrument in Model)
+                            {
+                                <div class="col-md-3 mb-4">
+                                    <div class="card h-100 text-center">
+                                        <div class="card-body">
+                                            <input class="form-check-input" type="radio" name="instrumentCode" id="@instrument.InstrumentCode" value="@instrument.InstrumentCode" required>
+                                            <label class="form-check-label" for="@instrument.InstrumentCode">
+                                                <!-- Smaller logo with inline style -->
+                                                <img src="@instrument.LogoUrl" alt="@instrument.InstrumentName" class="img-fluid" style="max-height: 60px; width: auto;" />
+                                                <div class="mt-2">@instrument.InstrumentName</div>
+                                            </label>
+                                        </div>
+                                    </div>
+                                </div>
+                            }
+                        </div>
+                        <input type="hidden" name="Amount" value="@ViewBag.Amount" />
+                        <input type="hidden" name="TransactionRemarks" value="@ViewBag.TransactionRemarks" />
+                        <button type="submit" class="btn btn-outline-primary">Continue</button>
+                    </form>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>

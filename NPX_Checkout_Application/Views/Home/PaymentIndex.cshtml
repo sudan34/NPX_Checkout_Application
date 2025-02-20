@@ -3,24 +3,21 @@
 }
 @model NPX_Checkout_Application.Models.RedirectionModel
 @inject AppSettings _settings;
-<html>
-<head>
-    <title> Gateway TEST</title>
-</head>
 
-
-<body onload="document.getElementById('form').submit()">
-
+<body>
     <form method="post" action="@(_settings.GatewayUrl)Payment/Index" id="form">
-
-        <input id="MerchantId" type="hidden" name="MerchantId" value="@Model.MerchantId" />
-        <input id="MerchantName" type="hidden" name="MerchantName" value="@Model.MerchantName" />
-        <input id="MerchantTxnId" type="hidden" name="MerchantTxnId" value="@Model.MerchantTxnId" />
-        <input id="Amount" type="hidden" name="Amount" value="@Model.Amount" />
-        <input id="ProcessId" type="hidden" name="ProcessId" value="@Model.ProcessId" />
-        <input id="InstrumentCode" type="hidden" name="InstrumentCode" value="@Model.InstrumentCode" />
-        <input id="TransactionRemarks" type="hidden" name="TransactionRemarks" value="@Model.TransactionRemarks" />
+        <input type="hidden" name="MerchantId" value="@Model.MerchantId" />
+        <input type="hidden" name="MerchantName" value="@Model.MerchantName" />
+        <input type="hidden" name="MerchantTxnId" value="@Model.MerchantTxnId" />
+        <input type="hidden" name="Amount" value="@Model.Amount" />
+        <input type="hidden" name="ProcessId" value="@Model.ProcessId" />
+        <input type="hidden" name="InstrumentCode" value="@Model.InstrumentCode" />
+        <input type="hidden" name="TransactionRemarks" value="@Model.TransactionRemarks" />
+        @* <input type="hidden" name="ResponseUrl" value="https://localhost:7102/api/Response/Notify" /> *@
+        <input type="hidden" name="ResponseUrl" value="https://localhost:7102/Receipt" />
     </form>
 
+    <script>
+        document.getElementById('form').submit();
+    </script>
 </body>
-</html>
