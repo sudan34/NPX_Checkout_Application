@@ -118,10 +118,12 @@ namespace NPX_Checkout_Application.Controllers
 
                 // Make a POST request to the API
                 HttpResponseMessage response = await _httpClient.PostAsync(baseURL + "GetProcessId", content);
+
                 if (response.IsSuccessStatusCode)
                 {
                     string responseData = await response.Content.ReadAsStringAsync();
                     dynamic resModel = JsonConvert.DeserializeObject(responseData)!;
+                    _logger.LogInformation($"GetProcesId Respone: {resModel}");
 
                     if (resModel!.code == "0" && !string.IsNullOrEmpty(resModel.data.ProcessId.ToString()))
                     {
@@ -184,6 +186,7 @@ namespace NPX_Checkout_Application.Controllers
                 var responseData = await response.Content.ReadAsStringAsync();
                 var resModel = JsonConvert.DeserializeObject<CheckTransactionStatusResponse>(responseData);
 
+                _logger.LogInformation($"CheckTransactionStatus Respone: {response.StatusCode}, Data: {JsonConvert.DeserializeObject(responseData)}");
                 if (resModel?.code == "0" && resModel.data != null)
                 {
                     // Pass the transaction data to the view

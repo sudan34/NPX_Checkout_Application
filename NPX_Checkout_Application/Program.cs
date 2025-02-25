@@ -1,6 +1,10 @@
 using NPX_Checkout_Application.Models;
+using Serilog;
 
 var builder = WebApplication.CreateBuilder(args);
+// Configure Serilog for logging
+ConfigureLogging(builder);
+
 // Register application settings and services
 ConfigureServices(builder);
 
@@ -10,6 +14,15 @@ var app = builder.Build();
 ConfigurePipeline(app);
 
 app.Run();
+static void ConfigureLogging(WebApplicationBuilder builder)
+{
+    var logger = new LoggerConfiguration()
+         .ReadFrom.Configuration(builder.Configuration)
+         .CreateLogger();
+    builder.Logging.ClearProviders();
+    builder.Logging.AddSerilog(logger);
+}
+
 static void ConfigureServices(WebApplicationBuilder builder)
 {
     // Register application settings
