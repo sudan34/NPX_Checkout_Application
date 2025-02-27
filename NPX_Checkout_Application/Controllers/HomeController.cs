@@ -81,6 +81,13 @@ namespace NPX_Checkout_Application.Controllers
         [HttpPost]
         public IActionResult ProcessSelectedInstrument(string instrumentCode, PaymentFormModel model)
         {
+            if (string.IsNullOrEmpty(instrumentCode))
+            {
+                // Handle the case where no instrument is selected
+                ModelState.AddModelError("instrumentCode", "Please select a payment instrument.");
+                return RedirectToAction("SelectInstrument", model);
+            }
+
             model.InstrumentCode = instrumentCode;
             return RedirectToAction("GetProcessId", model);
         }

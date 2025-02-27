@@ -10,27 +10,143 @@
             <div class="card bg-light">
                 <div class="card-body">
                     <h5 class="card-title">Select Payment Instrument</h5>
-                    <form method="post" action="@Url.Action("ProcessSelectedInstrument", "Home")">
-                        <div class="row">
-                            @foreach (var instrument in Model)
-                            {
-                                <div class="col-md-3 mb-4">
-                                    <div class="card h-100 text-center">
-                                        <div class="card-body">
-                                            <input class="form-check-input" type="radio" name="instrumentCode" id="@instrument.InstrumentCode" value="@instrument.InstrumentCode" required>
-                                            <label class="form-check-label" for="@instrument.InstrumentCode">
-                                                <!-- Smaller logo with inline style -->
-                                                <img src="@instrument.LogoUrl" alt="@instrument.InstrumentName" class="img-fluid" style="max-height: 60px; width: auto;" />
-                                                <div class="mt-2">@instrument.InstrumentName</div>
-                                            </label>
+
+                    <!-- Navbar-like tabs for BankType filtering -->
+                    <ul class="nav nav-tabs mb-4" id="bankTypeTabs" role="tablist">
+                        <li class="nav-item" role="presentation">
+                            <button class="nav-link active" id="all-tab" data-bs-toggle="tab" data-bs-target="#all" type="button" role="tab" aria-controls="all" aria-selected="true">All</button>
+                        </li>
+                        <li class="nav-item" role="presentation">
+                            <button class="nav-link" id="checkoutcard-tab" data-bs-toggle="tab" data-bs-target="#checkoutcard" type="button" role="tab" aria-controls="checkoutcard" aria-selected="false">Checkout Card</button>
+                        </li>
+                        <li class="nav-item" role="presentation">
+                            <button class="nav-link" id="checkoutgateway-tab" data-bs-toggle="tab" data-bs-target="#checkoutgateway" type="button" role="tab" aria-controls="checkoutgateway" aria-selected="false">Checkout Gateway</button>
+                        </li>
+                        <li class="nav-item" role="presentation">
+                            <button class="nav-link" id="ebank-tab" data-bs-toggle="tab" data-bs-target="#ebank" type="button" role="tab" aria-controls="ebank" aria-selected="false">E-Bank</button>
+                        </li>
+                        <li class="nav-item" role="presentation">
+                            <button class="nav-link" id="mbank-tab" data-bs-toggle="tab" data-bs-target="#mbank" type="button" role="tab" aria-controls="mbank" aria-selected="false">M-Bank</button>
+                        </li>
+                    </ul>
+
+                    <form asp-action="ProcessSelectedInstrument" method="post">
+                        <div class="tab-content" id="bankTypeTabsContent">
+                            <!-- All Instruments -->
+                            <div class="tab-pane fade show active" id="all" role="tabpanel" aria-labelledby="all-tab">
+                                <div class="row">
+                                    @foreach (var instrument in Model)
+                                    {
+                                        <div class="col-md-3 mb-4">
+                                            <div class="card h-100 text-center">
+                                                <div class="card-body">
+                                                    <!-- Unique ID for each radio button -->
+                                                    <input class="form-check-input" type="radio" name="InstrumentCode" id="@($"all-{instrument.InstrumentCode}")" value="@instrument.InstrumentCode" required>
+                                                    <!-- Wrap the image and text inside the label -->
+                                                    <label class="form-check-label" for="@($"all-{instrument.InstrumentCode}")" style="cursor: pointer;">
+                                                        <img src="@instrument.LogoUrl" alt="@instrument.InstrumentName" class="img-fluid" style="max-height: 60px; width: auto;" />
+                                                        <div class="mt-2">@instrument.InstrumentName</div>
+                                                    </label>
+                                                </div>
+                                            </div>
                                         </div>
-                                    </div>
+                                    }
                                 </div>
-                            }
+                            </div>
+
+                            <!-- Checkout Card -->
+                            <div class="tab-pane fade" id="checkoutcard" role="tabpanel" aria-labelledby="checkoutcard-tab">
+                                <div class="row">
+                                    @foreach (var instrument in Model.Where(i => i.BankType == "checkoutcard"))
+                                    {
+                                        <div class="col-md-3 mb-4">
+                                            <div class="card h-100 text-center">
+                                                <div class="card-body">
+                                                    <!-- Unique ID for each radio button -->
+                                                    <input class="form-check-input" type="radio" name="InstrumentCode" id="@($"checkoutcard-{instrument.InstrumentCode}")" value="@instrument.InstrumentCode" required>
+                                                    <!-- Wrap the image and text inside the label -->
+                                                    <label class="form-check-label" for="@($"checkoutcard-{instrument.InstrumentCode}")" style="cursor: pointer;">
+                                                        <img src="@instrument.LogoUrl" alt="@instrument.InstrumentName" class="img-fluid" style="max-height: 60px; width: auto;" />
+                                                        <div class="mt-2">@instrument.InstrumentName</div>
+                                                    </label>
+                                                </div>
+                                            </div>
+                                        </div>
+                                    }
+                                </div>
+                            </div>
+
+                            <!-- Checkout Gateway -->
+                            <div class="tab-pane fade" id="checkoutgateway" role="tabpanel" aria-labelledby="checkoutgateway-tab">
+                                <div class="row">
+                                    @foreach (var instrument in Model.Where(i => i.BankType == "CheckoutGateway"))
+                                    {
+                                        <div class="col-md-3 mb-4">
+                                            <div class="card h-100 text-center">
+                                                <div class="card-body">
+                                                    <!-- Unique ID for each radio button -->
+                                                    <input class="form-check-input" type="radio" name="InstrumentCode" id="@($"checkoutgateway-{instrument.InstrumentCode}")" value="@instrument.InstrumentCode" required>
+                                                    <!-- Wrap the image and text inside the label -->
+                                                    <label class="form-check-label" for="@($"checkoutgateway-{instrument.InstrumentCode}")" style="cursor: pointer;">
+                                                        <img src="@instrument.LogoUrl" alt="@instrument.InstrumentName" class="img-fluid" style="max-height: 60px; width: auto;" />
+                                                        <div class="mt-2">@instrument.InstrumentName</div>
+                                                    </label>
+                                                </div>
+                                            </div>
+                                        </div>
+                                    }
+                                </div>
+                            </div>
+
+                            <!-- E-Bank -->
+                            <div class="tab-pane fade" id="ebank" role="tabpanel" aria-labelledby="ebank-tab">
+                                <div class="row">
+                                    @foreach (var instrument in Model.Where(i => i.BankType == "EBanking"))
+                                    {
+                                        <div class="col-md-3 mb-4">
+                                            <div class="card h-100 text-center">
+                                                <div class="card-body">
+                                                    <!-- Unique ID for each radio button -->
+                                                    <input class="form-check-input" type="radio" name="InstrumentCode" id="@($"ebank-{instrument.InstrumentCode}")" value="@instrument.InstrumentCode" required>
+                                                    <!-- Wrap the image and text inside the label -->
+                                                    <label class="form-check-label" for="@($"ebank-{instrument.InstrumentCode}")" style="cursor: pointer;">
+                                                        <img src="@instrument.LogoUrl" alt="@instrument.InstrumentName" class="img-fluid" style="max-height: 60px; width: auto;" />
+                                                        <div class="mt-2">@instrument.InstrumentName</div>
+                                                    </label>
+                                                </div>
+                                            </div>
+                                        </div>
+                                    }
+                                </div>
+                            </div>
+
+                            <!-- M-Bank -->
+                            <div class="tab-pane fade" id="mbank" role="tabpanel" aria-labelledby="mbank-tab">
+                                <div class="row">
+                                    @foreach (var instrument in Model.Where(i => i.BankType == "mbank"))
+                                    {
+                                        <div class="col-md-3 mb-4">
+                                            <div class="card h-100 text-center">
+                                                <div class="card-body">
+                                                    <!-- Unique ID for each radio button -->
+                                                    <input class="form-check-input" type="radio" name="InstrumentCode" id="@($"mbank-{instrument.InstrumentCode}")" value="@instrument.InstrumentCode" required>
+                                                    <!-- Wrap the image and text inside the label -->
+                                                    <label class="form-check-label" for="@($"mbank-{instrument.InstrumentCode}")" style="cursor: pointer;">
+                                                        <img src="@instrument.LogoUrl" alt="@instrument.InstrumentName" class="img-fluid" style="max-height: 60px; width: auto;" />
+                                                        <div class="mt-2">@instrument.InstrumentName</div>
+                                                    </label>
+                                                </div>
+                                            </div>
+                                        </div>
+                                    }
+                                </div>
+                            </div>
                         </div>
+
+                        <!-- Hidden inputs and submit button -->
                         <input type="hidden" name="Amount" value="@ViewBag.Amount" />
                         <input type="hidden" name="TransactionRemarks" value="@ViewBag.TransactionRemarks" />
-                        <button type="submit" class="btn btn-outline-primary">Continue</button>
+                        <button type="submit" class="btn btn-outline-primary mt-3">Continue</button>
                     </form>
                 </div>
             </div>

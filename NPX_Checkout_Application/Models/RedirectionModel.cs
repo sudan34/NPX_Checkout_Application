@@ -3,7 +3,6 @@
     public class RedirectionModel
     {
         public string? MerchantId { get; set; }
-        public string? MerchantUserId { get; set; }
         public string? MerchantName { get; set; }
         public string? Amount { get; set; }
         public string? MerchantTxnId { get; set; }
